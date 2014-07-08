@@ -1,3 +1,170 @@
-<section data-ng-controller="IndexController">
+<!DOCTYPE html>
+
+<!--section data-ng-controller="IndexController">
     <h1 mean-token="'home-default'">This is the home view</h1>
+</section-->
+<head>
+<style>
+.box {
+    width:300px;
+    height:300px;
+    position:fixed;
+    margin-left:-150px; /* half of width */
+    margin-top:-150px;  /* half of height */
+    top:50%;
+    left:50%;
+}
+
+.topcorner{
+   position:absolute;
+   top:0;
+   right:0%;
+   }
+</style>
+</head> 
+
+<script type="text/ng-template" id="customTemplate.html">
+  <a>
+      <span bind-html-unsafe="match.label | typeaheadHighlight:query"></span>
+  </a>
+</script>
+<div class="btn-group"  ng-controller="myAppController">
+ <div>
+
+	<table ng-show='!postLogin' class="box">
+	<tr>
+	<td align="center">
+	Enter e-mail
+	<input type="text" ng-model="loginEmail" name="" type="email"  ng-keypress="loginEnter($event)" required>
+	</td>
+	<td align="left">
+	<button ng-click="login()" class="btn btn-primary" ng-click='login()'>Go</button>
+	</td>
+	</tr>
+	</table>
+ </div>
+
+ <div ng-model='postLogin' ng-show='postLogin'>
+        <label class="btn btn-primary" ng-model="radioModel" btn-radio="'Data'">Data</label>
+        <label class="btn btn-primary" ng-model="radioModel" btn-radio="'Reports'" ng-click='setBarChart()'>Reports</label>
+   <br>
+<br>
+<br>
+<!--  Data Entry Form Start -->
+<div ng-model="dataEntry" ng-show="radioModel==='Data'" style="height:475px; width:900px;"> 
+
+<form >
+	<div >
+			<!--h4>Sales Team</h4>
+				<select ng-model='myForm.salesPerson' ng-options="person.name for person in people"  ng-change="getActivities()">
+				<option value=''>Select... </option>
+			</select-->
+			<input type='hidden' ng-model='myForm.salesPerson'>
+	</div>
+	<h4>Week Starting</h4>
+	<!--div  id="table_div">	 
+		<div class="row">
+			<div class="col-md-6">
+				<p class="input-group"-->
+				  <input type="hidden" class="form-control" datepicker-popup="{{format}}" ng-model="dt" is-open="opened"  max-date="'3015-06-22'" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close"/>
+				  <!--span class="input-group-btn">
+					<button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+				  </span>
+				</p>
+			</div>
+		</div>
+	</div-->
+	<div >
+	<input  type="week" ng-model="weekPick" placeholder="YYYY-W##" min="2010-W02" max="2099-W52" required  ng-change="getActivities()" />
+		<br>
+		<br>
+		<table class="table table-striped table-bordered table-hover table-condensed" >
+				<tr align="center">
+					<th align="center">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Client
+					</th>
+					<th align="center">
+						Hours
+					</th>
+					<th/>
+				 </tr>
+				 <tr>
+					<td align="center"><input type="text" ng-model="myForm.label1" name=""  class="form-control" readonly></td>
+					<td align="center"><input type="text" ng-model="myForm.solution" name="" type="number"></td>
+					<td/>
+				 </tr>
+				 <tr>
+					<td align="center"><input type="text" ng-model="myForm.label2" name="" class="form-control" readonly></td>
+					<td align="center"><input type="text" ng-model="myForm.freetime" name="" type="number"></td>
+					<td/>
+				 </tr>
+				 <tr data-ng-repeat="clientHour in clientHours">
+					<td align="center">
+            <input type="text" ng-model="myForm['clientName'+($index)]" name=""  placeholder="Client..." typeahead="client.name as client.name for client in customers | filter:{name:$viewValue}" typeahead-template-url="customTemplate.html" class="form-control">
+					</td>
+					<td align="center"><input type="text" ng-model="myForm['hours'+($index)]" name="" type="number" ng-if="$last" my-focus="focusField+($index)"><input type="text" ng-model="myForm['hours'+($index)]" name="" type="number" ng-if="!$last" my-focus="focusField+($index)"></td>
+					<td align="center"> <button ng-click="addNewEntry()" class="btn btn-primary" ng-if="$last">+</button><button ng-click="removeEntry($index)" class="btn btn-primary" ng-if="!$last">-</button></td>
+				</tr>
+				<tr> <td colspan='3' align="center"><button ng-click="myForm.submitTheForm()" class="btn btn-primary">Save</button></td></tr>
+		</table>
+	</div>
+	<input type="hidden" ng-model="myForm.count" name="" type="number">
+	<input type="hidden" ng-model="myForm.week" name="">
+	<input type="hidden" ng-model="myForm.year" name="">
+	</form>
+</div>
+<!--  Data Entry Form End-->
+
+<!-- Reports Entry Form Start-->
+<div  ng-show="radioModel==='Reports'">
+
+<section >
+<form >
+<table style="background-color: #ccc;">
+<tr>
+<th align="center">Week Start</th><th>Week End</th><th>Sales Team</th><th>Region</th>
+</tr>
+<tr>
+<td>
+<input  type="week" ng-model="reportForm.weekStart" placeholder="YYYY-W##" min="2010-W02" max="2099-W52" required  ng-change="setBarChart()"/>
+</td>
+<td>
+<input  type="week" ng-model="reportForm.weekEnd" placeholder="YYYY-W##" min="2010-W02" max="2099-W52" required ng-change="setBarChart()"/>
+</td>
+<td>
+<select ng-model='reportForm.salesPerson' ng-options="person.name for person in people"  ng-change="setBarChart()">
+				<option value=''>All... </option>
+			</select>
+</td>
+<td>
+<select ng-model='reportForm.salesRegion' ng-options="region for region in regions"  ng-change="setBarChart()">
+				<option value=''>All... </option>
+			</select>
+</td>
+
+</tr>
+</table>
+	<input type="hidden" ng-model="reportForm.salesList">
+</form>
+  <div ui-chart="data" chart-options="chartOptions" style="height:475px; width:900px;"></div>
 </section>
+
+</div>
+
+	<div class="topcorner" ng-show='postLogin'>
+	<table>
+		<tr>
+		<td>
+			 Welcome :{{myForm.salesPerson.name}}
+		</td>
+		<td>
+		   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		</td>
+		<td>
+			 <a ng-ref="#" ng-click='logout()'>Logout</a>
+		</td>
+		</tr>
+	</table>
+	</div>
+</div><!-- Login... -->
+</div> <!--  topmost Div -->
+</html>

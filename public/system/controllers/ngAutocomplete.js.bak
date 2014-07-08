@@ -1,0 +1,33 @@
+'use strict';
+
+function TypeaheadCtrl($scope, $http) { 
+
+  	$scope.customers = [];
+
+    $scope.onedit = function() { 
+		
+    	$http.get('http://localhost:3000/customer/all').then(function(result) { $scope.customers = result.data; });
+    } ;
+	$scope.onedit();
+
+	$scope.clientHours=[{id: 'client1'}];
+
+	$scope.addNewEntry = function(client) {
+	  
+	  var newItemNo = $scope.clientHours.length+1;
+		$scope.clientHours.push({'id':'client'+newItemNo});
+	};
+
+	$scope.removeEntry = function(index) {
+	  	$scope.clientHours.splice(index,1);
+	};
+
+	$scope.myForm={};
+	 $scope.saveData = function() { 
+		
+		alert('hi');
+    	alert($scope.myForm.hours0);
+		alert($scope.myForm.clientName0);
+		alert('hi2');
+    } ;
+}

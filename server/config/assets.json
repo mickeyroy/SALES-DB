@@ -7,7 +7,12 @@
         },
         "js": {
             "public/build/js/dist.min.js": [
-                "public/system/lib/jquery/dist/jquery.min.js",
+		"public/system/lib/jqplot/jquery.js",
+		"public/system/lib/jqplot/jquery.jqplot.js",
+		"public/system/lib/jqplot/plugins/jqplot.pieRenderer.js",
+		"public/system/lib/jqplot/plugins/jqplot.barRenderer.js",
+		"public/system/lib/jqplot/plugins/jqplot.categoryAxisRenderer.js",
+		"public/system/lib/jqplot/plugins/jqplot.pointLabels.js",
                 "public/system/lib/angular/angular.js",
                 "public/system/lib/angular-mocks/angular-mocks.js",
                 "public/system/lib/angular-cookies/angular-cookies.js",
